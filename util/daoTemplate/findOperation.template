@@ -1,5 +1,5 @@
 const operation = {
-    loadOperation: function(serviceManager, inputs, callback){
+    loadOperation: function(serviceManager, inputs, callback, mcHeader){
 
         let processCallback = function(data){
             callback(data);
@@ -60,7 +60,7 @@ const operation = {
             queryCriteria.where = inputs.inputCriteria.where;
         }
 
-        serviceManager.callDBOperation.query(inputModelName, queryCriteria, processCallback );
+        serviceManager.callDBOperation.query(inputModelName, queryCriteria, processCallback, mcHeader);
     }
 }
 module.exports = operation;

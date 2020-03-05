@@ -86,7 +86,7 @@ const operation = {
         }
 
         serviceManager.callOperation("resource", resourceName, "findOperation", 
-                                        {inputCriteria:inCrit}, handler);
+                                        {inputCriteria:inCrit}, handler, httpObj.request.mcHeader);
         /** 
          * 
          * OPERATION IMPLEMENTATION ENDS HERE
