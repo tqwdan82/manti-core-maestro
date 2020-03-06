@@ -56,7 +56,7 @@ const operation = {
             httpObj.responseData = {"data":returnData}; //set the response data
             httpObj.completeHttpResponse(httpObj); // respond to the http call   
         }
-        serviceManager.callOperation("maestro", "serviceops", "getAllServiceOperation", {}, handler);
+        serviceManager.callOperation("maestro", "serviceops", "getAllServiceOperation", {}, handler, httpObj.request.mcHeader);
         /** 
          * 
          * OPERATION IMPLEMENTATION ENDS HERE

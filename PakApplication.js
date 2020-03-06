@@ -7,6 +7,7 @@ const pakDetails = {
     "VI_Enabled": false,
     "WI_Enabled": false,
     "DBI_Enabled": false,
+    "pakCode":"MCP_ACM_0_0_1",
     "Name":"Manti-core Maestro Management Module Package",
     "Description": "This is a management module that helps administrators to management data models and service APIs.",
     "WebContext": "maestro",
@@ -68,15 +69,15 @@ const init = function(dbMgr, svcMgr, webMgr){
     //TODO: Implement to create resource folder in app_modules and web_modules if do not exist
 
     
-    PakManager.webMgr.registerRoute('/resources/:model', 'get', 
-        function(req,res)
-        {
-            var callScript = req.params.model + ".js";
-            // logger.info('Incoming GET request for resource ' + callScript + "...");
-            var operationPath = path.join(__dirname,"../../", 'web_modules', 'resource', 'GET', callScript);
-            PakManager.webMgr.performFileOperation(operationPath, req, res);
-        }
-    );
+    // PakManager.webMgr.registerRoute('/resources/:model', 'get', 
+    //     function(req,res)
+    //     {
+    //         var callScript = req.params.model + ".js";
+    //         // logger.info('Incoming GET request for resource ' + callScript + "...");
+    //         var operationPath = path.join(__dirname,"../../", 'web_modules', 'resource', 'GET', callScript);
+    //         PakManager.webMgr.performFileOperation(operationPath, req, res);
+    //     }
+    // );
     //TODO: register other resource paths
     //route action for GET resource handlers
     // router.get('/resource/:model/:pk', function (req, res) {

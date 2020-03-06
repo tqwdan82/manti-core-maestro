@@ -54,7 +54,7 @@ const operation = {
             }
             httpObj.completeHttpResponse(httpObj); // respond to the http call   
         }
-        serviceManager.callOperation("maestro", "api", "delResourceApiOperation", inputData, handler);
+        serviceManager.callOperation("maestro", "api", "delResourceApiOperation", inputData, handler, httpObj.request.mcHeader);
         /** 
          * 
          * OPERATION IMPLEMENTATION ENDS HERE

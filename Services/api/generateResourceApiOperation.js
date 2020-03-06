@@ -2,11 +2,13 @@ const fs = require('fs')
 const path = require('path')
 
 const operation = {
-    loadOperation: function(serviceManager, inputs, callback){
+    loadOperation: function(serviceManager, inputs, callback, mcHeader){
         
         let svcData = {
             model:inputs
         };
+
+        //let allAccessObj = { appresources: [ '*' ], dbresources: ['*'] };
 
         //check operations
         // let resourcePath =  path.join(__dirname, '../../../../','web_modules','resource');
@@ -28,7 +30,7 @@ const operation = {
             returnData["data"] = {};
             callback(returnData);
         }
-        serviceManager.callOperation("maestro", "api", "generateNewSvcOperation", svcData, genApiDaoIndHandler);
+        serviceManager.callOperation("maestro", "api", "generateNewSvcOperation", svcData, genApiDaoIndHandler, mcHeader);
 
     }
 };

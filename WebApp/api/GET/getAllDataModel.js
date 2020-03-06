@@ -42,7 +42,7 @@ const operation = {
             httpObj.responseData = {"data":data}; //set the response data
             httpObj.completeHttpResponse(httpObj); // respond to the http call   
         }
-        serviceManager.callOperation("maestro", "api", "getAllApiDataModeOperation", {}, handler);
+        serviceManager.callOperation("maestro", "api", "getAllApiDataModeOperation", {}, handler, httpObj.request.mcHeader);
         /** 
          * 
          * OPERATION IMPLEMENTATION ENDS HERE
