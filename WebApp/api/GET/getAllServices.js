@@ -39,6 +39,7 @@ const operation = {
          * 
         */
         var handler = function(data){
+            console.log(data);
             let returnData = [];
             data.forEach(function(app)
             {

@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 const operation = {
-    loadOperation: function(serviceManager, inputs, callback){
+    loadOperation: function(serviceManager, inputs, callback, mcHeader){
         
         let deletedItems = [];
         let returnData = {};
@@ -37,6 +37,42 @@ const operation = {
                 }
 
             });
+        }
+
+        //delete model service & operation
+        let svcPath = path.join(__dirname,"../../../../app_modules","resource", inputs);
+        if (fs.existsSync(svcPath)) //if the service path exist
+        {
+            //read all operations
+            let operations = fs.readdirSync(svcPath);
+            //iterate all operations
+            operations.forEach(function(operation) {
+            let operationPath = path.join(svcPath, operation);
+            try {
+
+                fs.unlinkSync(operationPath);
+                //file removed
+    
+            } catch(err) {
+                console.error("Operation delete error: " + err)
+                returnData["status"] = "Failed";
+                returnData["details"] = "Operation delete failed. Error: " + err;
+                returnData["data"] = inputs;
+            }
+
+            });
+
+            try {
+                fs.rmdirSync(svcPath);
+                //file removed
+    
+            } catch(err) {
+            console.error("Service delete error: " + err)
+            returnData["status"] = "Failed";
+            returnData["details"] = "Service delete failed. Error: " + err;
+            returnData["data"] = inputs;
+            }
+
         }
 
         returnData["status"] = "Ok";

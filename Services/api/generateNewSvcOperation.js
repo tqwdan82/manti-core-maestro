@@ -3,7 +3,7 @@ const path = require('path')
 let ejs = require('ejs')
 
 const operation = {
-    loadOperation: function(serviceManager, inputs, callback){
+    loadOperation: function(serviceManager, inputs, callback, mcHeader){
         
         let returnData = {};
 

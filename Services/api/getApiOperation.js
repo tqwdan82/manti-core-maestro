@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 const operation = {
-    loadOperation: function(serviceManager, inputs, callback){
+    loadOperation: function(serviceManager, inputs, callback, mcHeader){
         //get resource operations
         let apis = {};
         let resourcePath =  path.join(__dirname, '../../../../','web_modules','resource');
@@ -52,10 +52,15 @@ const operation = {
                     returnApiDetails.apiType = "resource";
                     resourceFilesFormatted.push(returnApiDetails);
                 });
-                apis[actionType] = resourceFilesFormatted;
+
+                if(!apis[actionType])
+                    apis[actionType] = resourceFilesFormatted;
+                else{
+                    Array.prototype.push.apply(apis[actionType], resourceFilesFormatted);
+                }
             });
         }
-
+        
         //get custom operations
         let allApisPath =  path.join(__dirname, '../../../../','web_modules');
         if (fs.existsSync(allApisPath)) //if the web_modules exists
@@ -118,7 +123,12 @@ const operation = {
 
                         });
 
-                        apis[actionType] = apiActionFilesFormatted;
+                        if(!apis[actionType])
+                            apis[actionType] = apiActionFilesFormatted;
+                        else{
+                            Array.prototype.push.apply(apis[actionType], apiActionFilesFormatted);
+                        }
+
                     });
                 }
             });

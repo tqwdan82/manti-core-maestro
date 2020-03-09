@@ -1,8 +1,20 @@
 const fs = require('fs')
 const path = require('path')
 
+function exists(array, value){
+
+    let found = false;
+    array.forEach(function(item){
+        if(item === value){
+            found |= true;
+        }
+    });
+
+    return found;
+}
+
 const operation = {
-    loadOperation: function(serviceManager, inputs, callback){
+    loadOperation: function(serviceManager, inputs, callback, mcHeader){
         //get resource operations
         let generatedDataModels = [];
         let resourcePath =  path.join(__dirname, '../../../../','web_modules','resource');
@@ -21,31 +33,42 @@ const operation = {
                 let resourceFiles = fs.readdirSync(actionPath);
                 resourceFiles.forEach(function(resourceFile) {
                     let resourceName = resourceFile.substring(0, resourceFile.indexOf(".js"));
-                    generatedDataModels.push(resourceName);
+                    if(!exists(generatedDataModels, resourceName))
+                        generatedDataModels.push(resourceName);
                 });
 
             });
         }
 
-        let handler = function(response){
-            let returnData = {};
-            Object.keys(response).forEach(function(key)
-            {
-                returnData[key] = {
-                    generated:false
-                };
+        let allDataModels = [];
+        let modelsPath =  path.join(__dirname, '../../../../','models');
+        if (fs.existsSync(modelsPath)) //if the models directory exists
+        {
+            //read all resource action directories
+            let modelPaths = fs.readdirSync(modelsPath);
 
+            //iterate all model
+            modelPaths.forEach(function(modelPath) {
+                let model = modelPath.substring(0, modelPath.indexOf(".js"));
+                allDataModels.push(model);
             });
 
-            generatedDataModels.forEach(function(genDataModel)
-            {
-                if(typeof returnData[genDataModel] !== 'undefined')
-                    returnData[genDataModel].generated = true;
-            });
+        }
 
-            callback(returnData);
-        };
-        serviceManager.callOperation("maestro", "dataModel", "getCachedDataModelOperation", {}, handler);
+        let returnData = {};
+        allDataModels.forEach(function(key)
+        {
+            // let models = allDataModels.models;
+            // let modelKeys = Object.keys(models);
+            if(exists(generatedDataModels, key)){
+                returnData[key] = {generated:true};
+            }else{
+                returnData[key] = {generated:false};
+            }
+
+        });
+
+        callback(returnData);
         
     }
 };

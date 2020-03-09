@@ -20,7 +20,7 @@ const httpGetAsync = function(url, input, callback){
 
 const httpPostAsync = function(url, input, callback){
     Http.onreadystatechange = (e) => {
-        if( Http.readyState==4 && Http.status==200){
+        if( Http.readyState==4 && (Http.status==200 || Http.status==204)){
             callback(Http.responseText);
         }
     }

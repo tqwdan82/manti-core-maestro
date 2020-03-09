@@ -2,7 +2,7 @@ const fs = require('fs')
 const path = require('path')
 
 const operation = {
-    loadOperation: function(serviceManager, inputs, callback){
+    loadOperation: function(serviceManager, inputs, callback, mcHeader){
         
         let returnData = {};
         let modelsPath = path.join(__dirname,"../../../../models");

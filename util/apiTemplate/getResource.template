@@ -72,10 +72,19 @@ const operation = {
             inCrit.offset = parseInt(httpObj.request.query.offset, 10);
         }
 
-        //check if there is any input criteria for group
-        if(typeof httpObj.request.query.group !== 'undefined')
-        { // if there is input group
-            inCrit.offset = httpObj.request.query.group;
+       //check if there is any input criteria for order
+        if(typeof httpObj.request.query.order !== 'undefined')
+        { // if there is input order
+            let orderByGrps = httpObj.request.query.order.split(",");
+            let orderByArrays = [];
+            
+            for(let ogi = 0; ogi < orderByGrps.length; ogi++){
+                let orderByGrp = orderByGrps[ogi];
+                let orderByArray = orderByGrp.split("-");
+                orderByArrays.push(orderByArray);
+            }
+
+            inCrit.order = orderByArrays;
         }
 
         //check if there is any input criteria for attributes

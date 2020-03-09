@@ -1,3 +1,4 @@
+require('dotenv').config();
 /** 
  * 
  **/
@@ -45,15 +46,20 @@ const operation = {
                 customized:[]
             };
 
+            let allResActionObj = {};
+            let allCustomisedActionObj = {};
             //action type loop
             Object.keys(inData).forEach(function(actionType)
             {
                 //get the list of APIs by the action type
                 let apis = inData[actionType];
+                // console.log("------------------------apis: "+ actionType)
+                // console.log(apis);
                 
                 //iterate all the apis
                 apis.forEach(function(api)
                 {
+                    
                     let apiName = "";
                     let apiType = "";
                     let apiDescription = "";
@@ -78,16 +84,45 @@ const operation = {
                     
                     if(apiType === 'resource')
                     { // if the API type is a resource
-                        
-                        returnData.resource.push({
-                            name:apiName,
-                            description: apiDescription,
-                            get: [
-                                "/web/resource/"+apiName,
-                                "/web/resource/"+apiName+"/{id}",
-                                "/web/resource/"+apiName+"/{attribute}/{attribute value}",
+
+                        if(typeof allResActionObj[apiName] !== 'undefined'){
+                            //modify
+                            //allResActionObj[apiName]
+                            if(typeof allResActionObj[apiName].actions !== 'undefined'
+                                && Array.isArray(allResActionObj[apiName].actions)){
+
+                                // allResActionObj[apiName][actionType.toLowerCase()].push("/"+process.env.NODE_SVR_CONTEXTPATH+"/services/resource/"+apiName);
+                            
+                                allResActionObj[apiName].actions.push({
+                                    path:"/"+process.env.NODE_SVR_CONTEXTPATH+"/services/resource/"+apiName,
+                                    type:actionType.toLowerCase()
+                                });
+
+                            }else{
+
+                                allResActionObj[apiName].actions = [
+                                    {
+                                        path:"/"+process.env.NODE_SVR_CONTEXTPATH+"/services/resource/"+apiName,
+                                        type:actionType.toLowerCase()
+                                    }
+                                ]
+                                // allResActionObj[apiName][actionType.toLowerCase()]=["/"+process.env.NODE_SVR_CONTEXTPATH+"/services/resource/"+apiName]
+                            
+                            }
+                        }else{
+
+                            allResActionObj[apiName] = {
+                                name:apiName,
+                                description: apiDescription,
+                            };
+                            allResActionObj[apiName].actions = [
+                                {
+                                    path:"/"+process.env.NODE_SVR_CONTEXTPATH+"/services/resource/"+apiName,
+                                    type:actionType.toLowerCase()
+                                }
                             ]
-                        });
+                            // allResActionObj[apiName][actionType.toLowerCase()]=["/"+process.env.NODE_SVR_CONTEXTPATH+"/services/resource/"+apiName]
+                        }
                         
                     }
                     else
@@ -99,11 +134,17 @@ const operation = {
                 });
             });
 
+            Object.keys(allResActionObj).forEach(function(allResKey){
+                returnData.resource.push(allResActionObj[allResKey]);
+            });
+
+            console.log("---------------------------------returnData");
+            console.log(returnData);
+
             return returnData;
         };
         
         var handler = function(data){
-            
             httpObj.responseData = {"data":dataFormatter(data)}; //set the response data
             httpObj.completeHttpResponse(httpObj); // respond to the http call   
         }
