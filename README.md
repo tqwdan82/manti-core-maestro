@@ -22,8 +22,9 @@ Use the Manti-Core Platform's Package/Plugin Manager to install the plugin.
 - v0.0.1 Beta Release
 Known issues:
 1) Not able to test Post Web APIs
-2) No Web View editor
-3) Majority checks are not in placed
+2) Not able to test custom Web APIs
+3) No Web API & Web View editor
+4) Majority checks are not in placed
 
 ## Authors
 Tay Qiaowei
